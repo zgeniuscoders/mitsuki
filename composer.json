@@ -5,7 +5,8 @@
     "license": "MIT",
     "autoload": {
         "psr-4": {
-            "Mitsuki\\Mitsuki\\": "src/"
+            "Mitsuki\\Mitsuki\\": "src/",
+            "Tests\\": "tests/"
         }
     },
     "authors": [
@@ -20,5 +21,13 @@
         "php-di/php-di": "^7.1",
         "symfony/routing": "^8.0",
         "symfony/http-foundation": "^8.0"
+    },
+    "require-dev": {
+        "pestphp/pest": "^4.3"
+    },
+    "config": {
+        "allow-plugins": {
+            "pestphp/pest-plugin": true
+        }
     }
 }
