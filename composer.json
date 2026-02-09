@@ -1,0 +1,24 @@
+{
+    "name": "mitsuki/mitsuki",
+    "description": "A simple and fast PHP framework form small projects and microservices\"",
+    "type": "project",
+    "license": "MIT",
+    "autoload": {
+        "psr-4": {
+            "Mitsuki\\Mitsuki\\": "src/"
+        }
+    },
+    "authors": [
+        {
+            "name": "zgeniusecoders",
+            "email": "zgeniusecoders@gmail.com"
+        }
+    ],
+    "require": {
+        "symfony/psr-http-message-bridge": "^8.0",
+        "nyholm/psr7": "^1.8",
+        "php-di/php-di": "^7.1",
+        "symfony/routing": "^8.0",
+        "symfony/http-foundation": "^8.0"
+    }
+}
