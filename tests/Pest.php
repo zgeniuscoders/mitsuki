@@ -11,6 +11,11 @@
 |
 */
 
+use DI\ContainerBuilder;
+use Mitsuki\Mitsuki\Routes\Router;
+use Symfony\Component\Routing\RequestContext;
+use Symfony\Component\Routing\RouteCollection;
+
 pest()->extend(Tests\TestCase::class)->in('Feature');
 
 /*
@@ -43,3 +48,31 @@ function something()
 {
     // ..
 }
+
+function createContainer(): \DI\Container
+{
+    $builder = new ContainerBuilder();
+
+    // On ajoute les définitions nécessaires au Router
+    $builder->addDefinitions([
+        RouteCollection::class => DI\create(),
+        RequestContext::class => DI\create(),
+        'cache.dir' => __DIR__ . '/temp_cache',
+
+        Router::class => function ($c) {
+            return new Router(
+                $c->get(RouteCollection::class),
+                $c->get(RequestContext::class),
+                $c,
+                $c->get('cache.dir')
+            );
+        },
+    ]);
+
+    return $builder->build();
+}
+
+uses()->beforeEach(function () {
+    $this->container = createContainer();
+    $this->router = $this->container->get(Router::class);
+})->in(__DIR__);
