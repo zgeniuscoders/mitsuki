@@ -11,10 +11,8 @@
 |
 */
 
-use DI\ContainerBuilder;
+use Mitsuki\Mitsuki\MitsukiApp;
 use Mitsuki\Mitsuki\Routes\Router;
-use Symfony\Component\Routing\RequestContext;
-use Symfony\Component\Routing\RouteCollection;
 
 pest()->extend(Tests\TestCase::class)->in('Feature');
 
@@ -49,30 +47,24 @@ function something()
     // ..
 }
 
-function createContainer(): \DI\Container
+/**
+ * @throws Exception
+ */
+function createApp(): MitsukiApp
 {
-    $builder = new ContainerBuilder();
-
-    // On ajoute les définitions nécessaires au Router
-    $builder->addDefinitions([
-        RouteCollection::class => DI\create(),
-        RequestContext::class => DI\create(),
+    $projectRoot = realpath(__DIR__ . '/..');
+    return new MitsukiApp($projectRoot, [
         'cache.dir' => __DIR__ . '/temp_cache',
-
-        Router::class => function ($c) {
-            return new Router(
-                $c->get(RouteCollection::class),
-                $c->get(RequestContext::class),
-                $c,
-                $c->get('cache.dir')
-            );
-        },
+        'listeners' => [
+            \Mitsuki\Mitsuki\Listeners\PoweredByListener::class
+        ],
+        'controllers' => [
+            MockController::class,
+        ]
     ]);
-
-    return $builder->build();
 }
 
 uses()->beforeEach(function () {
-    $this->container = createContainer();
-    $this->router = $this->container->get(Router::class);
+    $this->app = createApp();
+    $this->router = $this->app->getContainer()->get(Router::class);
 })->in(__DIR__);
