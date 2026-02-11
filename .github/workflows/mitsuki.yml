@@ -30,4 +30,4 @@ jobs:
           chmod -R 777 tests/temp_cache
 
       - name: Run Pest Tests
-        run: ./vendor/bin/pest
+        run: ./vendor/bin/pest --no-cache
