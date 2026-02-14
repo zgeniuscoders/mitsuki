@@ -12,6 +12,7 @@
 */
 
 use Mitsuki\Mitsuki\MitsukiApp;
+use Mitsuki\Mitsuki\Resolvers\ControllerResolver;
 use Mitsuki\Mitsuki\Routes\Router;
 
 pest()->extend(Tests\TestCase::class)->in('Feature');
@@ -55,6 +56,9 @@ function createApp(): MitsukiApp
     $projectRoot = realpath(__DIR__ . '/..');
     return new MitsukiApp($projectRoot, [
         'cache.dir' => __DIR__ . '/temp_cache',
+        ControllerResolver::class => function () {
+            return new ControllerResolver(  __DIR__ . '/');
+        },
         'listeners' => [
             \Mitsuki\Mitsuki\Listeners\PoweredByListener::class
         ],

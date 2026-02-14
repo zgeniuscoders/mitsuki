@@ -1,7 +1,7 @@
 <?php
 
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
+use Mitsuki\Mitsuki\Http\Request;
+use Mitsuki\Mitsuki\Http\Response;
 use Mitsuki\Mitsuki\Routes\Router;
 use Mitsuki\Mitsuki\Routes\Route;
 
