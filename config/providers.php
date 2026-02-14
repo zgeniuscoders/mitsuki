@@ -1,10 +1,13 @@
 <?php
 
+use Mitsuki\Mitsuki\Http\Client\HttpClientInterface;
+use Mitsuki\Mitsuki\Http\Client\MitsukiHttpClient;
 use Mitsuki\Mitsuki\Listeners\PoweredByListener;
 use Mitsuki\Mitsuki\Resolvers\ControllerResolver;
 use Mitsuki\Mitsuki\Routes\Router;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
+use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
@@ -17,86 +20,34 @@ use Symfony\Component\Routing\RouteCollection;
 
 /**
  * PHP-DI Container Definitions
- *
- * This file defines the core services required to run the Mitsuki Framework.
- * It wires Symfony's HttpKernel components with the internal Mitsuki Router
- * and handles event dispatching and controller resolution.
- *
- * @author Zgeniuscoders
- * @package Mitsuki\Mitsuki
  */
-
 return [
+    /** @var string The root directory of the source code to scan for controllers. */
+    'project.root' => dirname(__DIR__) . '/src',
+
     /** @var string Directory path for storing compiled route caches. */
-    'cache.dir' => __DIR__ . '/../caches',
+    'cache.dir' => dirname(__DIR__) . '/var/caches',
 
     /**
-     * Controller Resolver Definition.
-     * * Bridges the Symfony HttpKernel with the Mitsuki Router.
-     * It uses an anonymous class to adapt the Router's callable resolution
-     * to the ControllerResolverInterface.
+     * Controller Resolver.
+     * Responsible for scanning the project to discover attributes.
      */
-    ControllerResolverInterface::class => function (ContainerInterface $c) {
-        return new class($c->get(Router::class)) implements ControllerResolverInterface {
-            public function __construct(private Router $router)
-            {
-            }
-
-            public function getController(Request $request): callable|false
-            {
-                return $this->router->getCallable($request);
-            }
-        };
+    ControllerResolver::class => function (ContainerInterface $c) {
+        return new ControllerResolver($c->get('project.root'));
     },
 
     /**
-     * Event Dispatcher Definition.
-     * * Initializes the central event system and registers listeners
-     * defined in the 'listeners' configuration key using lazy-loading.
+     * Mitsuki HttpClient.
+     * Provides an abstracted HTTP client, masking Symfony's implementation.
      */
-    EventDispatcher::class => function (ContainerInterface $c) {
-        $dispatcher = new EventDispatcher();
-        $listeners = $c->get('listeners');
-
-        foreach ($listeners as $listener) {
-            // Using a closure for lazy-loading the listener instance from the container
-            $dispatcher->addListener(KernelEvents::RESPONSE, function ($event) use ($c) {
-                $c->get(PoweredByListener::class)->onKernelResponse($event);
-            });
-        }
-        return $dispatcher;
+    HttpClientInterface::class => function (ContainerInterface $c) {
+        // We create the Symfony instance here, hidden from the rest of the app
+        $symfonyClient = HttpClient::create();
+        return new MitsukiHttpClient($symfonyClient);
     },
-
-    /**
-     * HttpKernel Definition.
-     * * The main engine that handles the Request and transforms it into a Response.
-     * Wires together the dispatcher, controller resolver, and argument resolver.
-     */
-    HttpKernelInterface::class => function (ContainerInterface $c) {
-        return new HttpKernel(
-            $c->get(EventDispatcher::class),
-            $c->get(ControllerResolverInterface::class),
-            new RequestStack(),
-            new ArgumentResolver()
-        );
-    },
-
-    /**
-     * Routing Request Context.
-     * Maintains information about the current request for URL matching.
-     */
-    RequestContext::class => \DI\create(RequestContext::class),
-
-    /**
-     * Route Collection.
-     * A container for all registered Symfony Route objects.
-     */
-    RouteCollection::class => \DI\create(RouteCollection::class),
 
     /**
      * Mitsuki Router Definition.
-     * * Initializes the custom framework router, injects dependencies,
-     * and triggers the route loading process from the provided controllers.
      */
     Router::class => function (ContainerInterface $c) {
         $router = new Router(
@@ -112,4 +63,48 @@ return [
 
         return $router;
     },
+
+    /**
+     * Symfony HttpKernel Controller Resolver.
+     */
+    ControllerResolverInterface::class => function (ContainerInterface $c) {
+        return new class($c->get(Router::class)) implements ControllerResolverInterface {
+            public function __construct(private Router $router) {}
+
+            public function getController(Request $request): callable|false
+            {
+                return $this->router->getCallable($request);
+            }
+        };
+    },
+
+    /**
+     * Event Dispatcher.
+     */
+    EventDispatcher::class => function (ContainerInterface $c) {
+        $dispatcher = new EventDispatcher();
+        $listeners = $c->has('listeners') ? $c->get('listeners') : [];
+
+        foreach ($listeners as $listener) {
+            $dispatcher->addListener(KernelEvents::RESPONSE, function ($event) use ($c) {
+                $c->get(PoweredByListener::class)->onKernelResponse($event);
+            });
+        }
+        return $dispatcher;
+    },
+
+    /**
+     * HttpKernel Main Engine.
+     */
+    HttpKernelInterface::class => function (ContainerInterface $c) {
+        return new HttpKernel(
+            $c->get(EventDispatcher::class),
+            $c->get(ControllerResolverInterface::class),
+            new RequestStack(),
+            new ArgumentResolver()
+        );
+    },
+
+    RequestContext::class => \DI\create(RequestContext::class),
+    RouteCollection::class => \DI\create(RouteCollection::class),
 ];
