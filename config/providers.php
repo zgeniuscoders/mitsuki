@@ -1,6 +1,7 @@
 <?php
 
 use Mitsuki\Mitsuki\Listeners\PoweredByListener;
+use Mitsuki\Mitsuki\Resolvers\ControllerResolver;
 use Mitsuki\Mitsuki\Routes\Router;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -102,6 +103,7 @@ return [
             $c->get(RouteCollection::class),
             $c->get(RequestContext::class),
             $c,
+            $c->get(ControllerResolver::class),
             $c->get('cache.dir')
         );
 
