@@ -2,7 +2,8 @@
 
 namespace Mitsuki\Mitsuki\Controllers;
 
-use Symfony\Component\HttpFoundation\Response;
+use Mitsuki\Mitsuki\Http\JsonResponse;
+use Mitsuki\Mitsuki\Http\Response;
 
 /**
  * Base controller providing a convenient response helper.
@@ -33,5 +34,20 @@ class BaseController
             ['Content-Type' => 'text/html'],
             $headers
         ));
+    }
+
+    /**
+     * Creates and returns a Mitsuki JsonResponse instance.
+     * * Automatically serializes the data to JSON and sets the
+     * Content-Type header to 'application/json'.
+     *
+     * @param mixed $data    The data to be encoded as JSON (array, object, etc.).
+     * @param int   $status  The HTTP status code (default: 200).
+     * @param array $headers Additional HTTP headers as key-value pairs.
+     * * @return JsonResponse A Mitsuki\Mitsuki\Http\JsonResponse instance.
+     */
+    public function json($data, int $status = 200, array $headers = []): JsonResponse
+    {
+        return new JsonResponse($data, $status, headers: $headers);
     }
 }
