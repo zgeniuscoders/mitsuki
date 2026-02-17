@@ -2,8 +2,8 @@
 
 namespace Mitsuki\Mitsuki\Controllers;
 
-use Mitsuki\Mitsuki\Http\JsonResponse;
-use Mitsuki\Mitsuki\Http\Response;
+use Mitsuki\Http\Responses\JsonResponse;
+use Mitsuki\Http\Responses\Response;
 
 /**
  * Base controller providing a convenient response helper.
@@ -11,7 +11,7 @@ use Mitsuki\Mitsuki\Http\Response;
  * This controller can be extended by other controllers to easily create
  * Symfony HttpFoundation responses with a body, status code, and headers.
  *
- * @author Zgeniuscoders
+ * @author Zgeniuscoders <zgeniuscoders@gmail.com>
  * @package Mitsuki\Mitsuki\Controllers
  */
 class BaseController
@@ -26,7 +26,7 @@ class BaseController
      * @param int    $status  The HTTP status code (default: 200).
      * @param array  $headers Additional HTTP headers as key-value pairs.
      *
-     * @return Response A Symfony\Component\HttpFoundation\Response instance.
+     * @return Response A Mitsuki\Http\Responses\Response instance.
      */
     public function response($body, int $status = 200, array $headers = []): Response
     {
@@ -44,7 +44,7 @@ class BaseController
      * @param mixed $data    The data to be encoded as JSON (array, object, etc.).
      * @param int   $status  The HTTP status code (default: 200).
      * @param array $headers Additional HTTP headers as key-value pairs.
-     * * @return JsonResponse A Mitsuki\Mitsuki\Http\JsonResponse instance.
+     * * @return JsonResponse A Mitsuki\Http\Responses\JsonResponse instance.
      */
     public function json($data, int $status = 200, array $headers = []): JsonResponse
     {

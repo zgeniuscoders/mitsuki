@@ -1,7 +1,7 @@
 <?php
 
-use Mitsuki\Mitsuki\Http\Request;
-use Mitsuki\Mitsuki\Http\Response;
+use Mitsuki\Http\Requests\Request;
+use Mitsuki\Http\Responses\Response;
 use Mitsuki\Mitsuki\Routes\Router;
 use Mitsuki\Mitsuki\Routes\Route;
 

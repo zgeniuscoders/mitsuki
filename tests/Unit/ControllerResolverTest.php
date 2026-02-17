@@ -1,6 +1,7 @@
 <?php
 
-use Mitsuki\Mitsuki\Http\Request;
+
+use Mitsuki\Http\Requests\Request;
 
 test('test resolve controller without adding this to providers', function () {
     $request = Request::create('/users/42', 'GET');

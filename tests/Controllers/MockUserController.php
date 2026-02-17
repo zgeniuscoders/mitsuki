@@ -11,13 +11,13 @@ class MockUserController extends BaseController
 {
 
     #[Route('users.index', '', 'GET')]
-    public function index(): \Mitsuki\Mitsuki\Http\Response
+    public function index(): \Mitsuki\Http\Responses\Response
     {
         return $this->response('<p>users.index</p>');
     }
 
     #[Route('users.show', '/{id}', 'GET')]
-    public function show(string $id): \Mitsuki\Mitsuki\Http\Response
+    public function show(string $id): \Mitsuki\Http\Responses\Response
     {
         return $this->response('<p>show</p>');
     }
