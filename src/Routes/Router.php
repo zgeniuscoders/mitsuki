@@ -112,6 +112,9 @@ class Router
     public function getCallable(Request $request): callable
     {
         try {
+
+            $this->requestContext->setMethod($request->getMethod());
+
             $matcher = new UrlMatcher($this->routeCollection, $this->requestContext);
             $parameters = $matcher->match($request->getPathInfo());
 
