@@ -11,9 +11,9 @@
 |
 */
 
+use Mitsuki\Controller\Resolvers\ControllerResolver;
+use Mitsuki\Hermite\Router;
 use Mitsuki\Mitsuki\MitsukiApp;
-use Mitsuki\Mitsuki\Resolvers\ControllerResolver;
-use Mitsuki\Mitsuki\Routes\Router;
 
 pest()->extend(Tests\TestCase::class)->in('Feature');
 
@@ -62,9 +62,6 @@ function createApp(): MitsukiApp
         'listeners' => [
             \Mitsuki\Mitsuki\Listeners\PoweredByListener::class
         ],
-        'controllers' => [
-            MockController::class,
-        ]
     ]);
 }
 

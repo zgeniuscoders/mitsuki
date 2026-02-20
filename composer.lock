@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ab9bcd62551623b424c5004e574377fb",
+    "content-hash": "cf6de3f782d2a30d91c132134faa2e4d",
     "packages": [
         {
             "name": "laravel/serializable-closure",
@@ -68,6 +68,43 @@
             "time": "2026-02-03T06:55:34+00:00"
         },
         {
+            "name": "mitsuki/attributes",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zgeniuscoders/mitsuki-attributes.git",
+                "reference": "4708f74c21f994bc53c56f7cf14ac5fb8b0e573a"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zgeniuscoders/mitsuki-attributes/zipball/4708f74c21f994bc53c56f7cf14ac5fb8b0e573a",
+                "reference": "4708f74c21f994bc53c56f7cf14ac5fb8b0e573a",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mitsuki\\Attributes\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "zgeniusecoders",
+                    "email": "zgeniusecoders@gmail.com"
+                }
+            ],
+            "description": "A lightweight and high-performance PHP router for the Mitsuki framework, leveraging Symfony Routing components for robust URL management.",
+            "support": {
+                "issues": "https://github.com/zgeniuscoders/mitsuki-attributes/issues",
+                "source": "https://github.com/zgeniuscoders/mitsuki-attributes/tree/v1.0.0"
+            },
+            "time": "2026-02-20T10:19:33+00:00"
+        },
+        {
             "name": "mitsuki/contracts",
             "version": "v1.0.1",
             "source": {
@@ -110,6 +147,60 @@
                 "source": "https://github.com/zgeniuscoders/mitsuki-contracts/tree/v1.0.1"
             },
             "time": "2026-02-20T07:58:58+00:00"
+        },
+        {
+            "name": "mitsuki/controller",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zgeniuscoders/mitsuki-controller.git",
+                "reference": "870f4a08be575323c611e6d2fd0e29f2ec6cdb70"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zgeniuscoders/mitsuki-controller/zipball/870f4a08be575323c611e6d2fd0e29f2ec6cdb70",
+                "reference": "870f4a08be575323c611e6d2fd0e29f2ec6cdb70",
+                "shasum": ""
+            },
+            "require": {
+                "mitsuki/attributes": "^1.0",
+                "mitsuki/http": "^1.0",
+                "php": ">=8.1"
+            },
+            "require-dev": {
+                "pestphp/pest": "^4.4"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tests\\": "tests/",
+                    "Mitsuki\\Controller\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "zgeniusecoders",
+                    "email": "zgeniusecoders@gmail.com"
+                }
+            ],
+            "description": "The core controller component for the Mitsuki framework, providing automated action resolution using Mitsuki Attributes and HTTP components.",
+            "keywords": [
+                "action-resolver",
+                "controller",
+                "http-kernel",
+                "mitsuki",
+                "mvc",
+                "php8-attributes"
+            ],
+            "support": {
+                "issues": "https://github.com/zgeniuscoders/mitsuki-controller/issues",
+                "source": "https://github.com/zgeniuscoders/mitsuki-controller/tree/v1.0.0"
+            },
+            "time": "2026-02-20T11:07:12+00:00"
         },
         {
             "name": "mitsuki/http",
@@ -155,6 +246,69 @@
                 "source": "https://github.com/zgeniuscoders/mitsuki-http/tree/v1.0.0"
             },
             "time": "2026-02-16T19:47:47+00:00"
+        },
+        {
+            "name": "mitsuki/router",
+            "version": "v1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zgeniuscoders/mitsuki-router.git",
+                "reference": "51b6c66e5a19f081cfbf931ebf10ef8d52395f89"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zgeniuscoders/mitsuki-router/zipball/51b6c66e5a19f081cfbf931ebf10ef8d52395f89",
+                "reference": "51b6c66e5a19f081cfbf931ebf10ef8d52395f89",
+                "shasum": ""
+            },
+            "require": {
+                "mitsuki/contracts": "^1.0",
+                "mitsuki/controller": "^1.0",
+                "mitsuki/http": "^1.0",
+                "php-di/php-di": "^7.1",
+                "symfony/filesystem": "^8.0",
+                "symfony/http-kernel": "^8.0",
+                "symfony/routing": "^8.0"
+            },
+            "require-dev": {
+                "pestphp/pest": "^4.4",
+                "php": ">=8.1"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Tests\\": "tests/",
+                    "Mitsuki\\Hermite\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "zgeniusecoders",
+                    "email": "zgeniusecoders@gmail.com"
+                }
+            ],
+            "description": "A lightweight and high-performance PHP router for the Mitsuki framework, powered by Symfony Routing components.",
+            "keywords": [
+                "attributes",
+                "fast-route",
+                "http-kernel",
+                "micro-framework",
+                "mitsuki",
+                "mvc",
+                "php8",
+                "router",
+                "routing",
+                "symfony-component"
+            ],
+            "support": {
+                "issues": "https://github.com/zgeniuscoders/mitsuki-router/issues",
+                "source": "https://github.com/zgeniuscoders/mitsuki-router/tree/v1.0.0"
+            },
+            "time": "2026-02-20T14:07:04+00:00"
         },
         {
             "name": "php-di/invoker",
