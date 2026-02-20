@@ -3,7 +3,9 @@
 use Mitsuki\Mitsuki\Http\Client\HttpClientInterface;
 use Mitsuki\Mitsuki\Http\Client\MitsukiHttpClient;
 use Mitsuki\Mitsuki\Listeners\PoweredByListener;
+use Mitsuki\Mitsuki\Listeners\ValidationExceptionListener;
 use Mitsuki\Mitsuki\Resolvers\ControllerResolver;
+use Mitsuki\Mitsuki\Resolvers\ValidatableRequestResolver;
 use Mitsuki\Mitsuki\Routes\Router;
 use Psr\Container\ContainerInterface;
 use Symfony\Component\EventDispatcher\EventDispatcher;
@@ -11,7 +13,11 @@ use Symfony\Component\HttpClient\HttpClient;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpKernel\Controller\ArgumentResolver;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestAttributeValueResolver;
+use Symfony\Component\HttpKernel\Controller\ArgumentResolver\RequestValueResolver;
 use Symfony\Component\HttpKernel\Controller\ControllerResolverInterface;
+use Symfony\Component\HttpKernel\Event\ExceptionEvent;
 use Symfony\Component\HttpKernel\HttpKernel;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
@@ -27,6 +33,8 @@ return [
 
     /** @var string Directory path for storing compiled route caches. */
     'cache.dir' => dirname(__DIR__) . '/var/caches',
+
+    ValidatableRequestResolver::class => \DI\autowire(),
 
     /**
      * Controller Resolver.
@@ -69,7 +77,9 @@ return [
      */
     ControllerResolverInterface::class => function (ContainerInterface $c) {
         return new class($c->get(Router::class)) implements ControllerResolverInterface {
-            public function __construct(private Router $router) {}
+            public function __construct(private Router $router)
+            {
+            }
 
             public function getController(Request $request): callable|false
             {
@@ -90,6 +100,11 @@ return [
                 $c->get(PoweredByListener::class)->onKernelResponse($event);
             });
         }
+
+        $dispatcher->addListener(KernelEvents::EXCEPTION, function (ExceptionEvent $event) use ($c) {
+            (new ValidationExceptionListener())->onKernelException($event);
+        });
+
         return $dispatcher;
     },
 
@@ -97,11 +112,22 @@ return [
      * HttpKernel Main Engine.
      */
     HttpKernelInterface::class => function (ContainerInterface $c) {
+
+        $argumentResolver = new ArgumentResolver(
+            null,
+            [
+                $c->get(ValidatableRequestResolver::class),
+                new RequestAttributeValueResolver(),
+                new RequestValueResolver(),
+                new DefaultValueResolver(),
+            ]
+        );
+
         return new HttpKernel(
             $c->get(EventDispatcher::class),
             $c->get(ControllerResolverInterface::class),
             new RequestStack(),
-            new ArgumentResolver()
+            $argumentResolver
         );
     },
 
