@@ -23,7 +23,8 @@
     "symfony/http-kernel": "^8.0",
     "symfony/event-dispatcher": "^8.0",
     "symfony/http-client": "^8.0",
-    "mitsuki/http": "^1.0"
+    "mitsuki/http": "^1.0",
+    "mitsuki/contracts": "^1.0"
   },
   "require-dev": {
     "pestphp/pest": "^4.3"

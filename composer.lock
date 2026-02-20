@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "bad06e03f87ee655a15af580eba6d5f7",
+    "content-hash": "ab9bcd62551623b424c5004e574377fb",
     "packages": [
         {
             "name": "laravel/serializable-closure",
@@ -66,6 +66,50 @@
                 "source": "https://github.com/laravel/serializable-closure"
             },
             "time": "2026-02-03T06:55:34+00:00"
+        },
+        {
+            "name": "mitsuki/contracts",
+            "version": "v1.0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/zgeniuscoders/mitsuki-contracts.git",
+                "reference": "6430d5e1ba9581392f668a7b4eca1b698d7ea452"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/zgeniuscoders/mitsuki-contracts/zipball/6430d5e1ba9581392f668a7b4eca1b698d7ea452",
+                "reference": "6430d5e1ba9581392f668a7b4eca1b698d7ea452",
+                "shasum": ""
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Mitsuki\\Contracts\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "zgeniusecoders",
+                    "email": "zgeniusecoders@gmail.com"
+                }
+            ],
+            "description": "Core interfaces and abstractions for the Mitsuki framework.",
+            "keywords": [
+                "contracts",
+                "framework",
+                "interfaces",
+                "mitsuki",
+                "psr"
+            ],
+            "support": {
+                "issues": "https://github.com/zgeniuscoders/mitsuki-contracts/issues",
+                "source": "https://github.com/zgeniuscoders/mitsuki-contracts/tree/v1.0.1"
+            },
+            "time": "2026-02-20T07:58:58+00:00"
         },
         {
             "name": "mitsuki/http",
